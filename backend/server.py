@@ -24,4 +24,19 @@ def index(path):
 @app.route('/api/feature-request/create', methods=['POST'])
 def createFeatureRequest():
     app.logger.debug(request.args)
-    return "Create a feature request"
+    # return "Create a feature request"
+    # title, client, client_priority, target_date, product_area
+    session = Session()
+
+    title = request.args.get('title')
+    client = request.args.get('client')
+    client_priority = request.args.get('client_priority')
+    target_date = request.args.get('target_date')
+    product_area = request.args.get('product_area')
+
+    try:
+        fr = FeatureRequest(title=title, client=client, client_priority=client_priority, target_date=target_date, product_area=product_area)
+    except ValueError as e:
+        return str(e), 404
+
+    return "ok"
