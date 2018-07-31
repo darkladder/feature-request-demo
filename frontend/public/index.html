@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="320">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="favicon.ico">
+    <title>Feature Request Demo</title>
+
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css" />
+    <!-- <script src="/vendor/bootstrap/js/bootstrap.min.js"></script> -->
+    <script src="/vendor/knockout/knockout-latest.js"></script>
+    <script src="/dist/bundle.js"></script>
+  </head>
+
+  <body>
+    <div>
+      <button data-bind="click: addFeatureRequest">Add Feature Request (+)</button>
+      <table>
+        <tbody data-bind="foreach: featureRequests">
+          <tr>
+            <td>
+              <label>Title</label>
+            </td>
+            <td>
+              <input type="text" data-bind="value: title" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Description</label>
+            </td>
+            <td>
+              <textarea data-bind="value: description"></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Client</label>
+            </td>
+            <td>
+              <select data-bind="options: $root.clients, value: client, optionsText: 'client'"></select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Target Date</label>
+            </td>
+            <td>
+              <input type="date" data-bind="value: targetDate" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label>Product Area</label>
+            </td>
+            <td>
+              <select data-bind="options: $root.productAreas, value: productArea, optionsText: 'productArea'"></select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function FeatureRequest(title, description, client, targetDate, productArea) {
+        var self = this;
+        self.title = title;
+        self.description = description;
+        self.client = client;
+        self.targetDate = targetDate;
+        self.productArea = productArea;
+      }
+  
+      function FeatureRequestViewModel() {
+        var self = this;
+
+        self.clients = [
+          'clientA',
+          'clientB'
+        ];
+
+        self.productAreas = [
+          'Product Area A',
+          'Product Area B'
+        ];
+  
+        self.featureRequests = ko.observableArray([
+          // new FeatureRequest('Some Title', 'Some Description', 'Some Client', '08/14/1979', 'Some Product Area')
+        ]);
+
+        self.addFeatureRequest = function() {
+          self.featureRequests.push(new FeatureRequest());
+        };
+      };
+  
+      ko.applyBindings(new FeatureRequestViewModel());
+    </script>
+
+  </body>
+
+</html>

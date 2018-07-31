@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "build": "webpack --info-verbosity verbose --config webpack/webpack.config.js",
+    "build:watch": "nodemon -x npm run build",
+    "serve": "flask run --host 0.0.0.0 --port 5000"
+  },
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "bootstrap": "^4.1.3",
+    "knockout": "^3.4.2"
+  }
+}

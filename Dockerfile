@@ -16,6 +16,11 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
 # Install Python project dependencies
 RUN pip install Flask SQLAlchemy psycopg2-binary
 
+RUN npm install -g \
+  webpack \
+  webpack-cli \
+  nodemon
+
 WORKDIR /app
 
 # RUN groupadd -r app && useradd -r -g app app \
@@ -27,4 +32,4 @@ ADD . /app
 
 ENV FLASK_APP=backend/python/server.py
 
-CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["npm", "run", "serve"]
