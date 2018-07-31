@@ -1,105 +1,142 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="HandheldFriendly" content="true">
-    <meta name="MobileOptimized" content="320">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="shortcut icon" href="favicon.ico">
-    <title>Feature Request Demo</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="MobileOptimized" content="320">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="shortcut icon" href="favicon.ico">
+  <title>Feature Request Demo</title>
 
-    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css" />
-    <!-- <script src="/vendor/bootstrap/js/bootstrap.min.js"></script> -->
-    <script src="/vendor/knockout/knockout-latest.js"></script>
-    <script src="/dist/bundle.js"></script>
-  </head>
+  <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css" />
+  <!-- <script src="/vendor/bootstrap/js/bootstrap.min.js"></script> -->
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
 
-  <body>
-    <div>
+<body>
+  <noscript>
+    JavaScript must be enabled for this app to work.
+  </noscript>
+
+  <div class="js">
+    <div data-bind="ifnot: $root.editableFeatureRequest">
       <button data-bind="click: addFeatureRequest">Add Feature Request (+)</button>
-      <table>
-        <tbody data-bind="foreach: featureRequests">
+    </div>
+
+    <div data-bind="with: $root.editableFeatureRequest">
+      <div class="edit-feature-request">
+        <div class="fieldsets">
+          <div>
+            <label>Title</label>
+            <div>
+              <input type="text" data-bind="value: title" />
+              <div class="alert-warning" data-bind="text: errors().title"></div>
+            </div>
+          </div>
+          <div>
+            <label>Description</label>
+            <div>
+              <textarea data-bind="value: description"></textarea>
+              <div class="alert-warning" data-bind="text: errors().description"></div>
+            </div>
+          </div>
+          <div>
+            <label>Client</label>
+            <div>
+              <select data-bind="options: $root.clients,
+                                          value: client">
+              </select>
+              <div class="alert-warning" data-bind="text: errors().client"></div>
+            </div>
+          </div>
+          <div>
+              <label>Client Priority</label>
+              <div>
+                <select data-bind="options: $root.availableClientPriorities
+                                   value: clientPriority">
+                </select>
+                <div class="alert-warning" data-bind="text: errors().clientPriority"></div>
+              </div>
+            </div>
+          <div>
+            <label>Target Date</label>
+            <div>
+              <input type="date" data-bind="value: targetDate" />
+              <div class="alert-warning" data-bind="text: errors().targetDate"></div>
+            </div>
+          </div>
+          <div>
+            <label>Product Area</label>
+            <div>
+              <select data-bind="options: $root.productAreas,
+                                          value: productArea">
+              </select>
+              <div class="alert-warning" data-bind="text: errors().productArea"></div>
+            </div>
+          </div>
+
+          <div data-bind="ifnot: isSaving">
+            <button data-bind="click: save">Save</button>
+            <button data-bind="click: cancel">Cancel</button>
+          </div>
+          <div data-bind="if: isSaving">
+            <span>Saving...</span>
+          </div>
+
+          <!-- <div data-bind="if: id" style="display: inline-block">
+            <button data-bind="if: id">Delete</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <div data-bind="ifnot: $root.editableFeatureRequest">
+      <table class="feature-requests">
+        <thead>
           <tr>
+            <td>
+              f(x)
+            </td>
             <td>
               <label>Title</label>
             </td>
             <td>
-              <input type="text" data-bind="value: title" />
-            </td>
-          </tr>
-          <tr>
-            <td>
               <label>Description</label>
             </td>
-            <td>
-              <textarea data-bind="value: description"></textarea>
-            </td>
-          </tr>
-          <tr>
             <td>
               <label>Client</label>
             </td>
             <td>
-              <select data-bind="options: $root.clients, value: client, optionsText: 'client'"></select>
+              <label>Client Priority</label>
             </td>
-          </tr>
-          <tr>
             <td>
               <label>Target Date</label>
             </td>
             <td>
-              <input type="date" data-bind="value: targetDate" />
-            </td>
-          </tr>
-          <tr>
-            <td>
               <label>Product Area</label>
             </td>
-            <td>
-              <select data-bind="options: $root.productAreas, value: productArea, optionsText: 'productArea'"></select>
-            </td>
           </tr>
+        </thead>
+        <tbody data-bind="foreach: featureRequests">
+          <td>
+            <button data-bind="click: edit">Edit</button>
+          </td>
+          <td data-bind="text: title"></td>
+          <td data-bind="text: description"></td>
+          <td data-bind="text: client"></td>
+          <td data-bind="text: clientPriority" style="text-align: center"></td>
+          <td data-bind="text: targetDate"></td>
+          <td data-bind="text: productArea"></td>
         </tbody>
       </table>
     </div>
+  </div>
 
-    <script>
-      function FeatureRequest(title, description, client, targetDate, productArea) {
-        var self = this;
-        self.title = title;
-        self.description = description;
-        self.client = client;
-        self.targetDate = targetDate;
-        self.productArea = productArea;
-      }
-  
-      function FeatureRequestViewModel() {
-        var self = this;
+  <!-- <script src="/vendor/knockout/knockout-latest.js"></script> -->
+  <script src="/dist/bundle.js"></script>
 
-        self.clients = [
-          'clientA',
-          'clientB'
-        ];
-
-        self.productAreas = [
-          'Product Area A',
-          'Product Area B'
-        ];
-  
-        self.featureRequests = ko.observableArray([
-          // new FeatureRequest('Some Title', 'Some Description', 'Some Client', '08/14/1979', 'Some Product Area')
-        ]);
-
-        self.addFeatureRequest = function() {
-          self.featureRequests.push(new FeatureRequest());
-        };
-      };
-  
-      ko.applyBindings(new FeatureRequestViewModel());
-    </script>
-
-  </body>
+</body>
 
 </html>

@@ -21,7 +21,7 @@
 
 # feature_requests = session.query(FeatureRequest).all()
 
-from base import Session, engine, Base
+''' from base import Session, engine, Base
 from feature_request import FeatureRequest
 
 session = Session()
@@ -39,4 +39,9 @@ for fr in frs:
     print(fr.product_area, fr.target_date)
 print('')
 
-session.close()
+session.close() '''
+
+from feature_request import *
+
+print(feature_request_crud.get_product_areas())
+print(feature_request_crud.get_clients())
