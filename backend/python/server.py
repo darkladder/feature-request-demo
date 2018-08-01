@@ -3,8 +3,6 @@ import json
 from feature_request import feature_request_crud
 from flask import Flask, session, redirect, url_for, escape, request, send_from_directory
 
-
-
 BACKEND_DIR = os.path.dirname(os.path.realpath(__file__))
 FRONTEND_DIR = os.path.join(BACKEND_DIR, '..', '..', 'frontend', 'public')
 
